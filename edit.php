@@ -3,6 +3,19 @@
   
   require 'database.php';
 
+  $id = $_GET["id"];
+
+  $statement = $conn -> prepare("SELECT * FROM contacts WHERE id = :id");
+  $statement -> execute([":id" => $id]);
+
+  if ($statement -> rowCount() == 0){
+    http_response_code(404);
+    echo("HTTP 404 NOT FOUND");
+    return;
+  }
+
+  $contact = $statement->fetch(PDO::FETCH_ASSOC);
+
   if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $error = null;
@@ -20,12 +33,15 @@
       $phoneNumber = $_POST['phone_number']
     ];
 
-    $statement = $conn->prepare("INSERT INTO contacts (name, phone_number) values ('$name', '$phoneNumber')");
-    $statement -> execute();
+    $statement = $conn->prepare("UPDATE contacts SET name = :name, phone_number = :phone_number WHERE id = :id");
+    $statement -> execute([
+      ":id" => $id,
+      ":name" => $_POST["name"],
+      "phone_number" => $_POST["phone_number"]
+    ]);
 
     header("Location: index.php");
     
-
   }
 }
 ?>
@@ -107,13 +123,13 @@
                   <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
     
                   <div class="col-md-6">
-                    <input id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
+                    <input value="<?= $contact["name"]?>"id="name" type="text" class="form-control" name="name" required autocomplete="name" autofocus>
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="phone_number" class="col-md-4 col-form-label text-md-end">Phone Number</label>
                   <div class="col-md-6">
-                    <input id="phone_number" type="tel" class="form-control" name="phone_number" required autocomplete="phone_number" autofocus>
+                    <input value="<?= $contact["phone_number"]?>" id="phone_number" type="tel" class="form-control" name="phone_number" required autocomplete="phone_number" autofocus>
                   </div>
                 </div>
                 <div class="mb-3 row">
