@@ -3,6 +3,13 @@
   
   require 'database.php';
 
+  if (!isset($_SESSION["user"])){
+    var_dump($_SESSION["user"]);
+    die();
+    header("Location: index.php");
+    return;
+  }
+
   if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $error = null;

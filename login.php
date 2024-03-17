@@ -7,38 +7,37 @@
 
     $error = null;
 
-    if(empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["password"])){
+    if(empty($_POST["email"]) || empty($_POST["password"])){
       $error = "Please fill all the fields";
     }elseif(!str_contains($_POST["email"], "@")){
       $error = "Please enter a valid email";
     }else{
-      $statement = $conn -> prepare("SELECT * FROM users WHERE email = :email");
+      $statement = $conn -> prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
       $statement -> execute([":email" => $_POST["email"]]);
 
-      if ($statement -> rowCount() > 0){
-        $error = "This email already exist";
-      }
-      
-      else{
-        $conn 
-          -> prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)") 
-          -> execute([
-            ":name" => $_POST["name"],
-            ":email" => $_POST["email"],
-            ":password" => password_hash($_POST["password"], PASSWORD_BCRYPT)
+      if ($statement->rowCount() == 0) {
+        $error = "Invalid credentials";
+      }else{
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-          ]);
+        if (!password_verify($_POST["password"], $user["password"])){
+          $error = "Invalid credentials";
+        }else{
 
-          $statement = $conn -> prepare("SELECT * FROM users WHERE email = :email LIMIT 1");
-          $statement -> execute([":email" => $_POST["email"]]);
-          $user = $statement->fetch(PDO::FETCH_ASSOC);
+          unset($user["password"]);
 
           session_start();
+
           $_SESSION["user"] = $user;
 
           header("Location: home.php");
-        
+        }
       }
+
+      
+      
+    
+
     }
 
 }
@@ -50,19 +49,14 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">Register</div>
+        <div class="card-header">Login</div>
         <div class="card-body">
         <?php if ($error): ?>
           <p class="text-danger">
             <?=$error?>
           </p>
         <?php endif ?>
-        <form method = 'POST'>
-            <div class="mb-3 row">
-              <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
-              <div class="col-md-6">
-                <input id="name" type="name" class="form-control" name="name" required autocomplete="name" autofocus>
-              </div>
+        <form method = 'POST' action='login.php'>
             </div>
             <div class="mb-3 row">
               <label for="email" class="col-md-4 col-form-label text-md-end">Email</label>
