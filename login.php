@@ -18,6 +18,7 @@
       if ($statement->rowCount() == 0) {
         $error = "Invalid credentials";
       }else{
+        
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (!password_verify($_POST["password"], $user["password"])){
@@ -33,11 +34,6 @@
           header("Location: home.php");
         }
       }
-
-      
-      
-    
-
     }
 
 }

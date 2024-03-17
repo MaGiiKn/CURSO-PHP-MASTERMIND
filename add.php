@@ -3,9 +3,9 @@
   
   require 'database.php';
 
+  session_start();
+
   if (!isset($_SESSION["user"])){
-    var_dump($_SESSION["user"]);
-    die();
     header("Location: index.php");
     return;
   }
@@ -27,11 +27,21 @@
       $phoneNumber = $_POST['phone_number']
     ];
 
-    $statement = $conn->prepare("INSERT INTO contacts (name, phone_number) values ('$name', '$phoneNumber')");
-    $statement -> execute();
+    $statement = $conn->prepare("INSERT INTO contacts (name, phone_number, user_id) values (:name, :phone_number, user_id )");
 
-    header("Location: index.php");
+    $name = $_POST["name"];
     
+    $phoneNumber = $_POST["phone_number"];
+
+    $statement = $conn->prepare("INSERT INTO contacts (user_id, name, phone_number) VALUES (:user_id, :name, :phone_number)");
+
+    $statement->execute([
+      ":user_id" => $_SESSION["user"]["id"],
+      ":name"=> $_POST["name"],
+      ":phone_number" => $_POST["phone_number"]
+    ]);
+
+    header("Location: home.php");
 
   }
 }

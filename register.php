@@ -12,6 +12,7 @@
     }elseif(!str_contains($_POST["email"], "@")){
       $error = "Please enter a valid email";
     }else{
+      
       $statement = $conn -> prepare("SELECT * FROM users WHERE email = :email");
       $statement -> execute([":email" => $_POST["email"]]);
 
@@ -20,6 +21,7 @@
       }
       
       else{
+        
         $conn 
           -> prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)") 
           -> execute([
@@ -40,7 +42,6 @@
         
       }
     }
-
 }
 ?>
 
