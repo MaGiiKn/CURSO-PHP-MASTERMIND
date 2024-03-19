@@ -19,3 +19,11 @@ CREATE TABLE contacts (
 
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE adress (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    adress VARCHAR(255),
+    user_id INT NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)

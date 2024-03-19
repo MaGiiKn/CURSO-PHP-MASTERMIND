@@ -29,6 +29,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="add.php">Add Contact</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="adresses.php">Add adress</a>
+              </li>
               <li class="nav-item" action="logout.php">
                 <a class="nav-link" href="logout.php">Logout</a>
               </li>
