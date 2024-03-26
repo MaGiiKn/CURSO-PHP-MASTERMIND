@@ -19,6 +19,7 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"
   ></script>
+  <script src="https://kit.fontawesome.com/c3770e3fac.js" crossorigin="anonymous"></script>
 
   <!-- Static Content -->
   <link rel="stylesheet" href="./static/css/index.css" />
