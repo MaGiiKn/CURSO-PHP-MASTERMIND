@@ -30,12 +30,28 @@
   <?php endif ?>  
   
   <?php foreach ($contacts as $contact): ?>
+
+    <!-- En este bucle por cada contacto estoy extrayendo de la base de datos todas las direcciones que le pertenecen a ese contacto. -->
+
+    <?php $contactAdress = $conn -> query("SELECT * FROM adress WHERE adress_id = {$contact['id']} "); ?>
       
     <div class="col-md-4 mb-3">
       <div class="card text-center">
         <div class="card-body">
           <h3 class="card-title text-capitalize"><?= $contact["name"] ?></h3>
           <p class="m-2"><?= $contact["phone_number"] ?></p>
+
+          <!-- Por cada contacto que este recorriendo el primer bucle en este segundo bucle estoy recorriendo 
+          cada direccion que le pertenece a cada contacto. -->
+          
+          <?php foreach ($contactAdress as $adress): ?>
+
+          <div class="row m-2 px-3 py-1">
+            <a href="adresses.php" class="col text-white text-start" style="text-decoration:none"><i class="fa-solid fa-location-dot text-success  "> </i> <?=$adress['adress']?></a>
+          </div>
+
+          <?php endforeach ?>
+
           <a href="edit.php?id=<?= $contact["id"]?>"class="btn btn-secondary mb-2">Edit Contact</a>
           <a href="delete.php?id=<?= $contact["id"]?>" class="btn btn-danger mb-2">Delete Contact</a>
         </div>

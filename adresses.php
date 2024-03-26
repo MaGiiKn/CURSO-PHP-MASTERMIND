@@ -50,15 +50,12 @@
           
           <?php foreach ($contactAdress as $adress): ?>
 
-            <div class="row m-2">
-              
-              <a class="col text-white text-start" style="text-decoration:none"><i class="fa-solid fa-location-dot text-success  "> </i> <?=$adress['adress']?></a>            
-              
+            <div class="row m-2 py-1">
+              <a class="col text-white text-start" style="text-decoration:none"><i class="fa-solid fa-location-dot text-success  "> </i> <?=$adress['adress']?></a>   
               <div class="col">
                 <a class="m-2" href="editAdress.php?id=<?=$adress["id"]?>"><i class="fa-regular fa-pen-to-square"></i></a>
                 <a class="m-2 text-danger" href="deleteAdress.php?id=<?=$adress["id"]?>"><i class="fa-solid fa-trash"></i></a>
               </div>
-              
             </div>
 
           <?php endforeach ?>
